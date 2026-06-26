@@ -6,8 +6,8 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/bbrainstormer/bootdev-pokedex/commands"
-	"github.com/bbrainstormer/bootdev-pokedex/lib"
+	"github.com/bbrainstormer/bootdev-pokedex/internal/commands"
+	"github.com/bbrainstormer/bootdev-pokedex/internal/lib"
 )
 
 func main() {
@@ -35,7 +35,7 @@ func main() {
 		word := clean_input[0]
 		cmd, exists := commands.GetCommand(word)
 		if exists {
-			err := cmd.Callback()
+			err := cmd.Callback(clean_input[1:])
 			if err != nil {
 				fmt.Println(err)
 			}

@@ -1,26 +1,12 @@
 package commands
 
 import (
-	"encoding/json"
 	"fmt"
-	"net/http"
 )
 
 const LOCATION_AREA_ENDPOINT string = "https://pokeapi.co/api/v2/location-area"
 
-type locationArea struct {
-	Name string `json:"name"`
-	Url  string `json:"url"`
-}
-
-type locationResponse struct {
-	Count    int            `json:"count"`
-	Next     string         `json:"next"`
-	Previous string         `json:"previous"`
-	Results  []locationArea `json:"results"`
-}
-
-func mapCommand() error {
+func mapCommand(args []string) error {
 	endpoint := globalConfig.next
 	if endpoint == "" {
 		endpoint = LOCATION_AREA_ENDPOINT
@@ -40,7 +26,7 @@ func mapCommand() error {
 	return nil
 }
 
-func mapBackCommand() error {
+func mapBackCommand(args []string) error {
 	endpoint := globalConfig.previous
 	if endpoint == "" {
 		endpoint = LOCATION_AREA_ENDPOINT
@@ -61,18 +47,5 @@ func mapBackCommand() error {
 }
 
 func getLocationAreas(url string) (locationResponse, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return locationResponse{}, err
-	}
-	defer resp.Body.Close()
-
-	decoder := json.NewDecoder(resp.Body)
-	decoded := locationResponse{}
-	err = decoder.Decode(&decoded)
-	if err != nil {
-		return locationResponse{}, err
-	}
-
-	return decoded, nil
+	return GetResource[locationResponse](url)
 }

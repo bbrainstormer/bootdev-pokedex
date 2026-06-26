@@ -8,16 +8,16 @@ import (
 type CliCommand struct {
 	Name        string
 	Description string
-	Callback    func() error
+	Callback    func(args []string) error
 }
 
-func exitCommand() error {
+func exitCommand(args []string) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func helpCommand() error {
+func helpCommand(args []string) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Print("Usage:\n\n")
 
@@ -48,6 +48,26 @@ func getCommands() map[string]CliCommand {
 			Name:        "Mapb",
 			Description: "Displays the previous page of locations",
 			Callback:    mapBackCommand,
+		},
+		"explore": {
+			Name:        "Explore",
+			Description: "Lists the possible pokemon encounters in an area",
+			Callback:    exploreCommand,
+		},
+		"catch": {
+			Name:        "Catch",
+			Description: "Attempts to catch the given pokemon",
+			Callback:    captureCommand,
+		},
+		"inspect": {
+			Name:        "Inspect",
+			Description: "Inspects the given pokemon (must be caught)",
+			Callback:    inspectCommand,
+		},
+		"pokedex": {
+			Name:        "Pokedex",
+			Description: "Lists the captured pokemon",
+			Callback:    pokedexCommand,
 		},
 	}
 }
